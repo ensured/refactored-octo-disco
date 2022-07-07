@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe - Game</title>
+    <style>
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
+            }
+            to {
+                text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
+            }
+        }
+        
+        .grid-container {
+            display: grid;
+            grid-template-columns: 77px 77px 77px !important;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .grid-item {
+            background-color: black;
+            color: white;
+            font-size: 40px;
+            display: flex;
+            height: 75px !important;
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid white;
+        }
+        
+        .grid-item:hover {
+            cursor: pointer;
+            background-color: rgba(0, 0, 0, 0.4);
+            color: white;
+        }
+        
+        header {
+            text-align: center;
+        }
+        
+        div {
+            text-align: center;
+        }
+        
+        .button-23 {
+            background-color: #ffffff;
+            border: 1px solid #222222;
+            border-radius: 8px;
+            box-sizing: border-box;
+            color: #222222;
+            cursor: pointer;
+            display: inline-block;
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 20px;
+            outline: none;
+            padding: 13px 23px;
+            position: relative;
+            text-align: center;
+            text-decoration: none;
+            touch-action: manipulation;
+            transition: box-shadow 0.2s, -ms-transform 0.1s, -webkit-transform 0.1s, transform 0.1s;
+            width: auto;
+        }
+        
+        .button-23:hover {
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.69);
+            -ms-transform: scale(1.04);
+            -webkit-transform: scale(1.04);
+            transform: scale(1.04);
+            transition-duration: 0.069s;
+        }
+        
+        body {
+            background-color: #000000 !important;
+        }
+        
+        #winner {
+            color: green;
+            font-size: 26px;
+            font-weight: 600;
+            padding: 10px;
+        }
+        
+        .glow {
+            font-size: 28px;
+            margin-bottom: 50px;
+            line-height: 0;
+            color: #fff;
+            text-align: center;
+            animation: glow 1s ease-in-out infinite alternate;
+        }
+        
+        #whos-turn {
+            display: flex;
+            justify-content: center;
+            color: rgba(80, 191, 68, 0.659);
+            font-weight: bold;
+            font-size: 16px;
+            line-height: 0;
+            margin: 10px 2px;
+        }
+        
+        #flash-message {
+            color: red;
+        }
+        
+        #reset {
+            color: black;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1 class="glow">Tic Tac Toe</h1>
+    </header>
+    <span id="whos-turn">It's X's Turn!</span>
+    <div class="grid-container">
+        <div class="grid-item" id="1" onclick="func1()"></div>
+        <div class="grid-item" id="2" onclick="func2()"></div>
+        <div class="grid-item" id="3" onclick="func3()"></div>
+        <div class="grid-item" id="4" onclick="func4()"></div>
+        <div class="grid-item" id="5" onclick="func5()"></div>
+        <div class="grid-item" id="6" onclick="func6()"></div>
+        <div class="grid-item" id="7" onclick="func7()"></div>
+        <div class="grid-item" id="8" onclick="func8()"></div>
+        <div class="grid-item" id="9" onclick="func9()"></div>
+    </div>
+    <div class="reset-container">
+        <div id="winner"></div>
+        <div id="flash-message"></div>
+        <button class="button-23" role="button" id="reset" onclick="clearBoard()">Reset</button>
+    </div>
+    <script>
+        const player1 = "X";
+        const player2 = "O";
+        let turn = player1;
+        let tries = 0;
+        gameBoard = {
+            "1": document.getElementById("1"),
+            "2": document.getElementById("2"),
+            "3": document.getElementById("3"),
+            "4": document.getElementById("4"),
+            "5": document.getElementById("5"),
+            "6": document.getElementById("6"),
+            "7": document.getElementById("7"),
+            "8": document.getElementById("8"),
+            "9": document.getElementById("9")
+        }
+        const whosTurn = document.getElementById("whos-turn");
+        const winner = document.getElementById("winner");
+
+        function switchPlayer() {
+            turn = turn === player1 ? player2 : player1;
+            whosTurn.innerHTML = `It's ${turn}'s turn!`;
+        }
+
+        function func1() {
+            tries++;
+            if (isTaken("1")) document.getElementById("flash-message").innerHTML = "cannot take " + gameBoard["1"].innerHTML + "s spot";
+            else {
+                gameBoard["1"].innerHTML = turn;
+                isWinner();
+                switchPlayer();
+                document.getElementById("flash-message").innerHTML = "";
+            }
+        }
+
+        function func2() {
+            tries++;
+            if (isTaken("2")) document.getElementById("flash-message").innerHTML = "cannot take " + gameBoard["2"].innerHTML + "s spot";
+            else {
+                gameBoard["2"].innerHTML = turn;
+                isWinner();
+                switchPlayer();
+                document.getElementById("flash-message").innerHTML = "";
+            }
+        }
+
+        function func3() {
+            tries++;
+            if (isTaken("3")) document.getElementById("flash-message").innerHTML = "cannot take " + gameBoard["3"].innerHTML + "s spot";
+            else {
+                gameBoard["3"].innerHTML = turn;
+                isWinner();
+                switchPlayer();
+                document.getElementById("flash-message").innerHTML = "";
+            }
+        }
+
+        function func4() {
+            tries++;
+            if (isTaken("4")) document.getElementById("flash-message").innerHTML = "cannot take " + gameBoard["4"].innerHTML + "s spot";
+            else {
+                gameBoard["4"].innerHTML = turn;
+                isWinner();
+                switchPlayer();
+                document.getElementById("flash-message").innerHTML = "";
+            }
+        }
+
+        function func5() {
+            tries++;
+            if (isTaken("5")) document.getElementById("flash-message").innerHTML = "cannot take " + gameBoard["5"].innerHTML + "s spot";
+            else {
+                gameBoard["5"].innerHTML = turn;
+                isWinner();
+                switchPlayer();
+                document.getElementById("flash-message").innerHTML = "";
+            }
+        }
+
+        function func6() {
+            tries++;
+            if (isTaken("6")) document.getElementById("flash-message").innerHTML = "cannot take " + gameBoard["6"].innerHTML + "s spot";
+            else {
+                gameBoard["6"].innerHTML = turn;
+                isWinner();
+                switchPlayer();
+                document.getElementById("flash-message").innerHTML = "";
+            }
+        }
+
+        function func7() {
+            tries++;
+            if (isTaken("7")) document.getElementById("flash-message").innerHTML = "cannot take " + gameBoard["7"].innerHTML + "s spot";
+            else {
+                gameBoard["7"].innerHTML = turn;
+                isWinner();
+                switchPlayer();
+                document.getElementById("flash-message").innerHTML = "";
+            }
+        }
+
+        function func8() {
+            tries++;
+            if (isTaken("8")) document.getElementById("flash-message").innerHTML = "cannot take " + gameBoard["8"].innerHTML + "s spot";
+            else {
+                gameBoard["8"].innerHTML = turn;
+                isWinner();
+                switchPlayer();
+                document.getElementById("flash-message").innerHTML = "";
+            }
+        }
+
+        function func9() {
+            tries++;
+            if (isTaken("9")) document.getElementById("flash-message").innerHTML = "cannot take " + gameBoard["9"].innerHTML + "s spot";
+            else {
+                gameBoard["9"].innerHTML = turn;
+                isWinner();
+                switchPlayer();
+                document.getElementById("flash-message").innerHTML = "";
+            }
+        }
+
+        function clearBoard() {
+            for (let key in gameBoard) {
+                gameBoard[key].innerHTML = "";
+            }
+        }
+
+        function isTaken(spot) {
+            if (gameBoard[spot].innerHTML == "") {
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+        function isWinner() {
+            if (gameBoard["1"].innerHTML === turn && gameBoard["2"].innerHTML === turn && gameBoard["3"].innerHTML === turn) {
+                winner.innerHTML = `${turn} is the winner with a horizontal win`;
+                clearBoard();
+            } else if (gameBoard["4"].innerHTML === turn && gameBoard["5"].innerHTML === turn && gameBoard["6"].innerHTML === turn) {
+                winner.innerHTML = `${turn} is the winner with a diagonal win!`;
+                clearBoard();
+            } else if (gameBoard["7"].innerHTML === turn && gameBoard["8"].innerHTML === turn && gameBoard["9"].innerHTML === turn) {
+                winner.innerHTML = `${turn} is the winner with a diagonal win!`;
+                clearBoard();
+            } else if (gameBoard["1"].innerHTML === turn && gameBoard["4"].innerHTML === turn && gameBoard["7"].innerHTML === turn) {
+                winner.innerHTML = `${turn} is the winner with a vertical win!`;
+                clearBoard();
+            } else if (gameBoard["2"].innerHTML === turn && gameBoard["5"].innerHTML === turn && gameBoard["8"].innerHTML === turn) {
+                winner.innerHTML = `${turn} is the winner with a vertical win!`;
+                clearBoard();
+            } else if (gameBoard["3"].innerHTML === turn && gameBoard["6"].innerHTML === turn && gameBoard["9"].innerHTML === turn) {
+                winner.innerHTML = `${turn} is the winner with a vertical win!`;
+                clearBoard();
+            } else if (gameBoard["1"].innerHTML === turn && gameBoard["5"].innerHTML === turn && gameBoard["9"].innerHTML === turn) {
+                winner.innerHTML = `${turn} is the winner with a horizontal win!`;
+                clearBoard();
+            } else if (gameBoard["3"].innerHTML === turn && gameBoard["5"].innerHTML === turn && gameBoard["7"].innerHTML === turn) {
+                winner.innerHTML = `${turn} is the winner with a diagonal win!`;
+                clearBoard();
+            } else if (gameBoard["1"].innerHTML !== "" && gameBoard["2"].innerHTML !== "" && gameBoard["3"].innerHTML !== "" && gameBoard["4"].innerHTML !== "" && gameBoard["5"].innerHTML !== "" && gameBoard["6"].innerHTML !== "" && gameBoard["7"].innerHTML !== "" && gameBoard["8"].innerHTML !== "" && gameBoard["9"].innerHTML !== "") {
+                winner.innerHTML = `Tie!`;
+                clearBoard();
+            }
+        }
+
+        function generateLightColorRgb() {
+            const red = Math.floor((1 + Math.random()) * 256 / 2);
+            const green = Math.floor((1 + Math.random()) * 256 / 2);
+            const blue = Math.floor((1 + Math.random()) * 256 / 2);
+            return "rgb(" + red + ", " + green + ", " + blue + ")";
+        }
+        document.getElementById("reset").addEventListener("click", () => {
+            randomRgb = generateLightColorRgb();
+            document.getElementById("reset").style.backgroundColor = randomRgb;
+        });
+    </script>
+</body>
+
+</html>
